@@ -1,36 +1,75 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 경제교육 만족도 조사
 
-## Getting Started
+지역경제교육센터의 교육을 **같은 질문·같은 5점 척도**로 조사하고, 센터별 교육 현황을 한눈에 비교하는 웹 서비스(프로토타입)입니다.
+서술 의견은 AI가 핵심만 정리하고, 경제교육정책팀은 결과 보고서를 만들 수 있습니다.
 
-First, run the development server:
+## 이용 대상
+
+| 대상 | 하는 일 |
+|---|---|
+| 수강생 | 담당자에게 받은 숫자 6자리 접속 코드(또는 설문 링크)로 접속해 8개 문항(5점)과 서술 의견 2개에 응답합니다. 로그인·이름·연락처가 필요 없습니다. |
+| 지역경제교육센터 담당자 | 우리 센터의 평균 점수·응답 수·서술 의견 요약을 보고, 수강생에게 알려 줄 접속 코드와 설문 링크를 확인합니다. |
+| 경제교육정책팀 담당자 | 모든 센터를 비교하고, 서술 의견 요약과 결과 보고서를 만듭니다. |
+
+자세한 사용법은 [MANUAL.md](MANUAL.md)를 보세요.
+
+## 기술
+
+Next.js 16 (App Router) · React 19 · TypeScript · Tailwind CSS 4 · Supabase(데이터베이스) · OpenAI(서술 요약·보고서) · Recharts(차트) · Pretendard(글꼴)
+
+## 실행 방법
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+npm run dev        # http://localhost:3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+그 밖의 명령
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+npm run lint       # 코드 검사
+npm run build      # 운영용 빌드 (개발 서버를 끈 뒤 실행)
+npm run seed       # 샘플 센터·교육·링크·담당자 계정 넣기 (개발용)
+npm run seed:more  # 센터별로 점수가 다른 샘플 응답 추가 (개발용)
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 환경 변수 (`.env`, 커밋하지 않습니다)
 
-## Learn More
+| 이름 | 용도 |
+|---|---|
+| `SUPABASE_URL` | Supabase 프로젝트 주소 |
+| `SUPABASE_SECRET_KEY` | 서버 전용 비공개 키 (브라우저로 보내지 않습니다) |
+| `SESSION_SECRET` | 로그인 입장권 서명용 비밀값 (32자 이상) |
+| `OPENAI_API_KEY` | 서술 요약·결과 보고서 |
+| `SEED_ACCOUNT_PASSWORD` | 샘플 담당자 계정 비밀번호 (개발용, 운영에는 넣지 않음) |
 
-To learn more about Next.js, take a look at the following resources:
+샘플 계정의 아이디와 비밀번호는 공개하지 않습니다. `scripts/seed.mjs`와 `.env`를 보세요.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 폴더 구조
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```
+app/            화면(시작·로그인·설문·대시보드·개인정보 안내)과 서버 동작(app/actions)
+components/     화면 조각 (설문 폼, 현황 표, 차트, 보고서 등)
+lib/            문항 정의, 검사 규칙, 로그인·권한, 데이터 조회, AI 호출
+proxy.ts        로그인하지 않은 사람을 시작 화면으로 보내는 1차 확인
+supabase/       데이터베이스 마이그레이션(SQL)
+scripts/        샘플 데이터 넣기
+```
 
-## Deploy on Vercel
+설계와 계획은 [PRD.md](PRD.md) · [PLAN.md](PLAN.md) · [DESIGN.md](DESIGN.md), 작업 규칙은 [CLAUDE.md](CLAUDE.md), 점검 기록은 [CHECK.md](CHECK.md)에 있습니다.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 지켜야 할 규칙 (요약)
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- 문항은 `lib/survey/questions.ts` 한 곳에서만 정의합니다. 센터마다 바꾸지 않습니다.
+- 점수는 1~5 정수, 서술은 문항당 500자, 마감은 교육일 + 14일(한국 시간 23:59:59)입니다.
+- 제출한 응답은 수정·삭제할 수 없습니다. (데이터베이스에서도 막혀 있습니다)
+- 응답이 5건 미만인 센터는 평균을 보여 주지 않고 "응답 부족"으로 표시합니다.
+- 센터 담당자는 자기 센터 자료만 볼 수 있습니다.
+- 서술 의견은 외부 AI(OpenAI)로 전송되며, 전송 전에 전화번호·이메일·주민번호 형태를 가립니다.
+- 비밀 키는 `.env`에만 두고 코드·화면·커밋에 넣지 않습니다.
+
+## 운영 전에 해야 할 일
+
+- 접속 주소(IP)별 제출·로그인 제한, 정식 개인정보 처리방침 문구와 보관 기간 정하기
+- 운영용 Supabase 프로젝트를 따로 만들고, 샘플 데이터와 샘플 계정은 넣지 않기
+- Vercel에는 앱이 쓰는 환경 변수만 입력하기 (계정 전체 권한 토큰은 넣지 않기)
