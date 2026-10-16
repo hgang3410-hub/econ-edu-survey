@@ -3,6 +3,7 @@ import Link from "next/link";
 import { SCORE_MAX, SCORE_QUESTIONS } from "@/lib/survey/questions";
 import { BAR_TONE, CELL_TONE, DOT_TONE } from "@/components/scoreTone";
 import { formatScore, SCORE_LEVELS, scoreLevel } from "@/lib/survey/format";
+import { ScoreCards } from "@/components/ScoreCards";
 import type { CenterStat } from "@/lib/data/stats";
 
 type Props = {
@@ -14,8 +15,19 @@ type Props = {
 
 export function StatsTable({ centers, hrefFor, selectedCenterId }: Props) {
   return (
-    <div className="-mx-5 overflow-x-auto px-5">
-      <p className="mb-2 text-xs text-muted sm:hidden">← 좌우로 밀어서 문항별 점수를 볼 수 있습니다 →</p>
+    <div>
+      <ScoreCards
+        items={centers.map((c) => ({
+          key: c.centerId,
+          name: c.centerName,
+          href: hrefFor?.(c.centerId),
+          selected: c.centerId === selectedCenterId,
+          responseCount: c.responseCount,
+          average: c.hasEnough ? c.average : null,
+          questionAverages: c.hasEnough ? c.questionAverages : null,
+        }))}
+      />
+      <div className="hidden overflow-x-auto md:block">
       <table className="w-full min-w-[40rem] text-left text-sm">
         <caption className="sr-only">센터별 평균 점수와 응답 수</caption>
         <thead>
@@ -90,6 +102,7 @@ export function StatsTable({ centers, hrefFor, selectedCenterId }: Props) {
           })}
         </tbody>
       </table>
+      </div>
       <ul aria-label="점수 단계 안내" className="mt-3 flex flex-wrap gap-x-4 gap-y-1 text-xs text-muted">
         {SCORE_LEVELS.map((level) => (
           <li key={level.key} className="flex items-center gap-1.5">

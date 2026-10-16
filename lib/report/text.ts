@@ -32,7 +32,7 @@ export function reportToText(report: Report): string {
   const pct = (n: number) => (s.total === 0 ? 0 : Math.round((n / s.total) * 100));
   const lines = [
     reportTitle(report),
-    ...(narrative.headline ? [`▶ ${narrative.headline}`] : []),
+    ...(narrative.headline ? [`▶ ${narrative.headline.replace(/^[-•\s]+/, "")}`] : []),
     "",
     "1. 조사 개요",
     ` - 대상/기간: ${reportPeriod(report)}`,

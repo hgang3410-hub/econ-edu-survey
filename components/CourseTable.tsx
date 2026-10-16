@@ -1,5 +1,6 @@
 // 교육별 표: 한 센터의 교육(과정)·회차마다 응답 수, 평균, 문항별 평균을 한 줄씩 보여 준다.
 // 평균은 소수점 첫째 자리, 응답이 5건 미만이면 "응답 부족"으로 표시한다.
+import { ScoreCards } from "@/components/ScoreCards";
 import { BAR_TONE, CELL_TONE } from "@/components/scoreTone";
 import type { CourseStat } from "@/lib/data/courses";
 import { SCORE_MAX, SCORE_QUESTIONS } from "@/lib/survey/questions";
@@ -7,8 +8,18 @@ import { formatScore, scoreLevel } from "@/lib/survey/format";
 
 export function CourseTable({ courses }: { courses: CourseStat[] }) {
   return (
-    <div className="-mx-5 overflow-x-auto px-5">
-      <p className="mb-2 text-xs text-muted sm:hidden">← 좌우로 밀어서 문항별 점수를 볼 수 있습니다 →</p>
+    <div>
+      <ScoreCards
+        items={courses.map((c) => ({
+          key: `${c.courseName}-${c.roundName}`,
+          name: c.courseName || `${c.roundName} 교육`,
+          sub: c.roundName,
+          responseCount: c.responseCount,
+          average: c.hasEnough ? c.average : null,
+          questionAverages: c.hasEnough ? c.questionAverages : null,
+        }))}
+      />
+      <div className="hidden overflow-x-auto md:block">
       <table className="w-full min-w-[40rem] text-left text-sm">
         <caption className="sr-only">교육별 평균 점수와 응답 수</caption>
         <thead>
@@ -66,6 +77,7 @@ export function CourseTable({ courses }: { courses: CourseStat[] }) {
           ))}
         </tbody>
       </table>
+      </div>
     </div>
   );
 }

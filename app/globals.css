@@ -14,14 +14,15 @@
   --primary-soft: #e8f3ff;
   --secondary: #4593fc;
   --secondary-soft: #e5f4ff;
-  --accent: #6d4fe0;
-  --accent-soft: #f0ebff;
+  --accent: #0e74c4;
+  --accent-soft: #e2f1fc;
   --danger: #e03140;
   --danger-soft: #ffeeee;
   --success: #0a8f58;
   --success-soft: #e5f9f0;
   --warning: #b86e00;
   --warning-soft: #fff6e0;
+  --hero: linear-gradient(135deg, #1747c4 0%, #2272eb 50%, #3fa0ff 100%);
 }
 
 @theme inline {
@@ -61,14 +62,15 @@
     --primary-soft: #1d2d4a;
     --secondary: #5aa2ff;
     --secondary-soft: #1b2c42;
-    --accent: #a591ff;
-    --accent-soft: #2a2347;
+    --accent: #6cb8ff;
+    --accent-soft: #17304a;
     --danger: #ff6b78;
     --danger-soft: #3d2024;
     --success: #3ddc97;
     --success-soft: #16301f;
     --warning: #ffb938;
     --warning-soft: #3a2e12;
+    --hero: linear-gradient(135deg, #10306f 0%, #1c56b8 50%, #2d7fe0 100%);
   }
 }
 
@@ -146,4 +148,117 @@ body {
   #report-print li {
     break-inside: avoid;
   }
+}
+
+/* ───── 디자인 효과: 글자 뒤 그림자(가독성), 유리 느낌 알약, 부드러운 움직임 ───── */
+
+/* 파란 배경 위의 흰 글자 뒤에 옅은 그림자를 깔아 또렷하게 보이게 한다 */
+.text-shadow-soft {
+  text-shadow: 0 1px 2px rgb(8 28 90 / 0.35), 0 4px 18px rgb(8 28 90 / 0.4);
+}
+
+/* 파란 히어로 배너 */
+.hero {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background: var(--hero);
+  color: #ffffff;
+}
+.hero::before,
+.hero::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  border-radius: 9999px;
+  filter: blur(40px);
+  pointer-events: none;
+}
+.hero::before {
+  width: 22rem;
+  height: 22rem;
+  right: -6rem;
+  top: -8rem;
+  background: rgb(120 200 255 / 0.55);
+  animation: float-a 9s ease-in-out infinite;
+}
+.hero::after {
+  width: 18rem;
+  height: 18rem;
+  left: -5rem;
+  bottom: -9rem;
+  background: rgb(30 80 210 / 0.55);
+  animation: float-b 11s ease-in-out infinite;
+}
+.hero-wave {
+  position: absolute;
+  inset: auto 0 0 0;
+  z-index: -1;
+  width: 200%;
+  height: 7rem;
+  opacity: 0.16;
+  animation: wave-slide 18s linear infinite;
+  pointer-events: none;
+}
+
+/* 유리 느낌의 알약 (히어로 위 작은 버튼·배지) */
+.glass {
+  background: rgb(255 255 255 / 0.16);
+  border: 1px solid rgb(255 255 255 / 0.28);
+  backdrop-filter: blur(8px);
+  color: #ffffff;
+}
+
+@keyframes float-a {
+  0%, 100% { transform: translate(0, 0); }
+  50% { transform: translate(-1.5rem, 1.5rem); }
+}
+@keyframes float-b {
+  0%, 100% { transform: translate(0, 0); }
+  50% { transform: translate(2rem, -1rem); }
+}
+@keyframes wave-slide {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: none; }
+}
+
+/* 화면이 열릴 때 본문 요소가 위로 살짝 떠오르며 차례로 나타난다 */
+#main-content > * {
+  animation: fade-up 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+#main-content > *:nth-child(2) { animation-delay: 70ms; }
+#main-content > *:nth-child(3) { animation-delay: 140ms; }
+#main-content > *:nth-child(4) { animation-delay: 210ms; }
+#main-content > *:nth-child(5) { animation-delay: 280ms; }
+#main-content > *:nth-child(n + 6) { animation-delay: 340ms; }
+
+/* 카드에 마우스를 올리면 살짝 떠오른다 */
+.lift {
+  transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.25s ease;
+}
+.lift:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 30px rgb(34 114 235 / 0.16);
+}
+
+/* 버튼·링크·입력창이 부드럽게 반응한다 */
+button, a, input, select {
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, opacity 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
+}
+button:not(:disabled):active {
+  transform: scale(0.97);
+}
+html {
+  scroll-behavior: smooth;
+}
+
+/* 움직임을 줄이는 설정이면 효과를 모두 끈다 */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  #main-content > *, .hero::before, .hero::after, .hero-wave { animation: none; }
+  .lift, .lift:hover, button:not(:disabled):active { transition: none; transform: none; }
 }

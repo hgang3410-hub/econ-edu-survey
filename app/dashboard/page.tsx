@@ -48,7 +48,7 @@ function dashboardHref(round: string | null, centerId?: string, course?: string 
 function KpiCard({ icon, tone, label, value, note, hint }: { icon: ReactNode; tone: string; label: string; value: string; note: string; hint?: string }) {
   // 정사각형에 가깝게 세로로 쌓은 작은 카드: 아이콘 → 이름 → 값 → 설명
   return (
-    <Card className="flex min-h-28 flex-col justify-between gap-1.5 p-3.5">
+    <Card className="lift flex min-h-28 flex-col justify-between gap-1.5 p-3.5">
       <span className={`flex h-9 w-9 items-center justify-center rounded-lg ${tone}`}>{icon}</span>
       <div className="min-w-0">
         <p className="flex items-center gap-1.5 text-xs text-muted sm:text-sm">
@@ -211,9 +211,9 @@ async function DashboardContent({ searchParams }: { searchParams: PageProps<"/da
   return (
     <DashboardShell viewer={viewer}>
       <header className="flex flex-col gap-4">
-        <div>
-          <h1 className="text-2xl font-semibold">{statusTitle}</h1>
-          <p className="text-muted">
+        <div className="hero rounded-3xl px-6 py-6 sm:px-8 sm:py-7">
+          <h1 className="text-shadow-soft text-2xl font-bold sm:text-3xl">{statusTitle}</h1>
+          <p className="text-shadow-soft mt-1 opacity-95">
             {isCompany ? "경제교육정책팀 담당자님, 모든 센터의 교육 현황입니다." : `${centerTitle(viewer.centerName ?? "")} 담당자님, 우리 센터의 교육 현황입니다.`}
           </p>
         </div>

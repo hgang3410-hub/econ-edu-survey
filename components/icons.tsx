@@ -50,3 +50,6 @@ export const ArrowRightIcon = (p: SVGProps<SVGSVGElement>) => (
 export const ClipboardIcon = (p: SVGProps<SVGSVGElement>) => (
   <Icon {...p}><rect x="5" y="4" width="14" height="17" rx="2" /><path d="M9 4.5h6M9 11h6M9 15h4" /></Icon>
 );
+export const ShieldIcon = (p: SVGProps<SVGSVGElement>) => (
+  <Icon {...p}><path d="M12 3 4.5 6v5.5c0 4.4 3.1 7.9 7.5 9.5 4.4-1.6 7.5-5.1 7.5-9.5V6L12 3Z" /><path d="m9 12 2.2 2.2L15.2 10" /></Icon>
+);

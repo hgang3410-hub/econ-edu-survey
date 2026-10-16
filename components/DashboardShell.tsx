@@ -65,10 +65,10 @@ export function DashboardShell({ viewer, children }: { viewer: Viewer; children:
             <button
               type="submit"
               aria-label="로그아웃"
-              className="flex h-9 items-center gap-1.5 rounded-lg border border-line px-3 text-sm font-medium transition hover:bg-line/60 lg:border-0 lg:px-2"
+              className="flex h-9 items-center gap-1.5 rounded-lg border border-line px-2.5 text-sm font-medium transition hover:bg-line/60 lg:border-0 lg:px-2"
             >
               <LogoutIcon width={18} height={18} />
-              <span className="lg:sr-only">로그아웃</span>
+              <span className="sr-only">로그아웃</span>
             </button>
           </form>
         </div>

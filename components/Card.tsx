@@ -23,7 +23,7 @@ export function Brand({ className = "", stacked = false }: { className?: string;
       <span className="flex shrink-0 items-center rounded-xl bg-white px-2 py-1 ring-1 ring-line">
         <Image src="/logo.png" alt="재정경제부" width={800} height={253} className="h-8 w-auto" />
       </span>
-      <span className="whitespace-nowrap text-base font-semibold leading-tight">
+      <span className="whitespace-nowrap text-sm font-semibold leading-tight sm:text-base">
         경제교육 만족도 조사
         <span className="block text-xs font-normal text-muted">지역경제교육센터</span>
       </span>
