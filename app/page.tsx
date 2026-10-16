@@ -7,8 +7,10 @@ import { ShieldIcon } from "@/components/icons";
 
 export default function Home() {
   return (
-    <main id="main-content" className="mx-auto flex w-full max-w-5xl flex-1 flex-col gap-6 px-4 py-6 sm:gap-8 sm:py-10">
-      <section className="hero rounded-[2rem] px-6 pb-20 pt-6 sm:px-10 sm:pb-28 sm:pt-8">
+    <main id="main-content" className="flex flex-1 flex-col pb-10">
+      {/* 파란 배경은 화면 가로 전체로 넓게 깔고, 안쪽 내용만 가운데 폭에 맞춘다. */}
+      <section className="hero rounded-b-[2.5rem] px-4 pb-24 pt-6 sm:px-6 sm:pb-32 sm:pt-8">
+        <div className="mx-auto w-full max-w-5xl">
         <svg className="hero-wave" viewBox="0 0 1200 120" preserveAspectRatio="none" aria-hidden="true">
           <path d="M0 60 C 150 10, 300 110, 450 60 S 750 10, 900 60 S 1050 110, 1200 60 V120 H0 Z" fill="#ffffff" />
         </svg>
@@ -46,8 +48,10 @@ export default function Home() {
             <br className="sm:hidden" /> 교육 환경 개선에 반영합니다.
           </p>
         </header>
+        </div>
       </section>
 
+      <div className="mx-auto flex w-full max-w-5xl flex-col gap-6 px-4 sm:gap-8 sm:px-6">
       <RoleSelector />
 
       <p className="flex items-start gap-2.5 rounded-3xl bg-primary-soft p-5 text-sm leading-7 text-primary">
@@ -63,6 +67,7 @@ export default function Home() {
           </Link>
         </span>
       </p>
+      </div>
     </main>
   );
 }
