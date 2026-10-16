@@ -34,12 +34,16 @@ export default function Home() {
           <h1 className="text-shadow-soft text-3xl font-bold leading-tight tracking-tight sm:text-5xl sm:leading-[1.15]">
             통합된 설문조사로
             <br />
-            <span className="sm:whitespace-nowrap">센터별 교육현황을 한눈에 확인합니다</span>
+            <span className="sm:whitespace-nowrap">
+              센터별 교육현황을
+              <br className="sm:hidden" /> 한눈에 확인합니다
+            </span>
           </h1>
           <p className="text-shadow-soft max-w-3xl text-base leading-8 opacity-95 sm:text-lg">
             간단한 5점 평가와 솔직한 피드백을 남겨주세요.
             <br />
-            남겨주신 의견은 AI가 핵심을 파악하여 교육 환경 개선에 반영합니다.
+            남겨주신 의견은 AI가 핵심을 파악하여
+            <br className="sm:hidden" /> 교육 환경 개선에 반영합니다.
           </p>
         </header>
       </section>
@@ -49,7 +53,11 @@ export default function Home() {
       <p className="flex items-start gap-2.5 rounded-3xl bg-primary-soft p-5 text-sm leading-7 text-primary">
         <ShieldIcon width={18} height={18} className="mt-1 shrink-0" />
         <span>
-          수강생에게는 이름·연락처를 묻지 않습니다. 남겨 주신 서술 의견은 개인정보를 가린 뒤 외부 AI 서비스로 전송되어 요약됩니다.{" "}
+          수강생에게는 이름·연락처를 묻지 않습니다.
+          <br />
+          남겨 주신 서술 의견은 개인정보를 가린 뒤
+          <br />
+          AI 서비스로 전송되어 요약됩니다.{" "}
           <Link href="/privacy" className="font-semibold underline underline-offset-4">
             자세히 보기
           </Link>
